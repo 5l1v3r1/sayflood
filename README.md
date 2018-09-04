@@ -1,3 +1,22 @@
-# sayflood
+# SayFlood v1.0
+# Author: https://github.com/thelinuxchoice/sayflood
+
 Sayat.me Flooder
+
 ![say](https://user-images.githubusercontent.com/34893261/45059962-63b06680-b074-11e8-8526-8b2b4835f138.png)
+
+## Legal disclaimer:
+
+Usage of SayFlood for attacking targets without prior mutual consent is illegal. It's the end user's responsibility to obey all applicable local, state and federal laws. Developers assume no liability and are not responsible for any misuse or damage caused by this program 
+
+### Usage:
+```
+git clone https://github.com/thelinuxchoice/sayflood
+cd sayflood
+bash sayflood.sh
+```
+
+### Donate!
+Support the authors:
+
+<noscript><a href="https://liberapay.com/thelinuxchoice/donate"><img alt="Donate using Liberapay" src="https://liberapay.com/assets/widgets/donate.svg"></a></noscript>
