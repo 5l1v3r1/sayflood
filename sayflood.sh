@@ -61,9 +61,9 @@ else
 printf "\e[1;92m Done\n\e[0m"
 fi
 killall -HUP tor > /dev/null 2>&1
-sleep 1
+
 done
-rm -rf temp_user
+
 exit 1
 }
 banner
